@@ -22,7 +22,7 @@ public class BalanceCommand extends SimpleCommand {
         tree.getRoot()
                 .str("player")
                 .optional()
-                .exec(context -> {
+                .exec((context, sender) -> {
                     String player = context.getResult(0);
                     DatabaseHandler database = EconomyAPI.INSTANCE.getDatabase();
                     
