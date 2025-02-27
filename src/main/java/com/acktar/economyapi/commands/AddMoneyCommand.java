@@ -2,6 +2,7 @@ package com.acktar.economyapi.commands;
 
 import org.allaymc.api.command.SimpleCommand;
 import org.allaymc.api.command.tree.CommandTree;
+import org.allaymc.api.command.SenderType
 import org.allaymc.api.server.Server;
 import org.allaymc.api.entity.interfaces.EntityPlayer;
 
@@ -21,20 +22,12 @@ public class AddMoneyCommand extends SimpleCommand {
         tree.getRoot()
                 .str("player")
                 .doubleNum("money")
-                .exec(context -> {
+                .exec((context, sender) -> {
                     String player = context.getResult(0);
                     Double money = context.getResult(1);
                     String moneyyy = String.valueOf(money);
                     DatabaseHandler database = EconomyAPI.INSTANCE.getDatabase();
       
-                    // Ensure sender is a player
-                    if (!(context.getSender() instanceof EntityPlayer)) {
-                        context.getSender().sendText("Usage: /setmoney <player> <balance>");
-                        return context.fail();
-                    }                     
-                       
-                    EntityPlayer sender = (EntityPlayer) context.getSender(); // Cast CommandSender to EntityPlayer
-                        
                     // Handle player balance
                     if (!database.hasAccount(player)) {
                         String playerNotFound = EconomyAPI.INSTANCE.CONFIG.playerNotFound();
@@ -68,6 +61,6 @@ public class AddMoneyCommand extends SimpleCommand {
                         sender.sendText("An internal error occured while trying to update users balance!");
                         return context.fail();
                     }
-                });
+                }, SenderType.PLAYER);
     }
 }
