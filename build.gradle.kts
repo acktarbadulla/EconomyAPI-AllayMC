@@ -5,9 +5,9 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "org.allaymc.javaplugintemplate"
-description = "Java plugin template for allay server"
-version = "1.0.0"
+group = "com.acktar.economyapi"
+description = "A Simple EconomyAPI plugin using SQLITE and MONGODB!"
+version = "1.0.0-SNAPSHOT"
 
 java {
     toolchain {
@@ -26,6 +26,8 @@ repositories {
 dependencies {
     compileOnly(group = "org.allaymc.allay", name = "api", version = "master-SNAPSHOT")
     compileOnly(group = "org.projectlombok", name = "lombok", version = "1.18.34")
+    implementation("org.mongodb:mongodb-driver-sync:4.7.1")
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0") 
 
     annotationProcessor(group = "org.projectlombok", name = "lombok", version = "1.18.34")
 }
