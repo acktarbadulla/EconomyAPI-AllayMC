@@ -1,57 +1,68 @@
-# Allay Java Plugin Template
+# EconomyAPI for AllayMC Server Software
+Supporting both SQLITE3 and MongoDB
+Because MongoDB is the GOAT
 
-Welcome to the java plugin template for allay.
+# Commands
+Command | Description | use
+--- | --- | ---
+`/setmoney` | Set A Players Total Balance | op
+`/addmoney` | Add Money To A Players Balance | op
+`/reducemoney` | Reduce Money From A Players Balance | op
+`/balance` | See Your / Other Players Balance | all
 
-## Prerequisites
-
-- Java21 or higher.
-- Allay installed.
-
-## Getting Started
-
-1. **Clone this Repository**
-
-```bash
-git clone https://github.com/AllayMC/JavaPluginTemplate.git
-```
-   
-2. **Navigate to the Cloned Directory**
-
-```bash
-cd JavaPluginTemplate
-```
-   
-3. **Change Plugin Information**
-
-- Rename package name from `org.allaymc.javaplugintemplate` to `your.group.name.and.pluginname`
-- Edit [build.gradle.kts](build.gradle.kts) and [settings.gradle.kts](settings.gradle.kts)
-- Edit [plugin.json](src/main/resources/plugin.json)
-- Reload gradle
-   
-4. **Build and Run Your Plugin**
-
-```bash
-gradlew shadowJar
-```
-   
-This command will produce a `.jar` file in the `build/libs` directory. 
-Copy the `.jar` file to the `plugins` directory of your allay server.
-Start the allay server and check the logs to ensure your plugin loads and operates
-as expected.
-
-5. **Test Your Plugin in Gradle**
-
-```bash
-gradlew runServer
+# Repository
+```xml
+<repositories>
+        <repository>
+                <id>jitpack.io</id>
+                <url>https://jitpack.io</url>
+        </repository>
+</repositories>
 ```
 
-This command will start an allay server with your plugin loaded.
-Then close allay server by clicking `X` in the dashboard window.
+# Dependency
+```xml
+<dependency>
+	    <groupId>com.github.acktarbadulla</groupId>
+	    <artifactId>EconomyAPI-AllayMC</artifactId>
+	    <version>AllayMC</version>
+</dependency>
+```
 
-## Documentation
+# For Developer
+```java
+/**
+ * GET A PLAYERS BALANCE
+ * @param (string) playername
+ * @return (double) balance
+*/
+EconomyAPI.getInstance().getDatabase().getBalance("playername");
 
-For a deeper dive into the Allay API and its functionalities, please refer to our [documentation](https://docs.allaymc.org) (WIP).
+/**
+ * SET A PLAYERS BALANCE
+ * @param (string) playername | (double) balance
+ * @return void
+*/
+EconomyAPI.getInstance().getDatabase().setBalance("playername", 100000.0);
 
-## License
+/**
+ * ADD MONEY TO A PLAYERS BALANCE
+ * @param (string) playername | (double) amount
+ * @return void
+*/
+EconomyAPI.getInstance().getDatabase().addBalance("playername", 500.0);
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+/**
+ * REDUCE A PLAYERS BALANCE
+ * @param (string) playername | (double) amount
+ * @return (boolean) true if successfull | false if not enough money
+*/
+EconomyAPI.getInstance().getDatabase().subtractBalance("playername", 500.0);
+
+/**
+ * CHECK IF PLAYER HAS ACCOUNT
+ * @param (string) playername
+ * @return (boolean) true if has account | false if no account
+*/
+EconomyAPI.getInstance().getDatabase().hasAccount("playername");
+```
