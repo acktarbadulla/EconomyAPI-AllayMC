@@ -1,6 +1,7 @@
 {
-  "entrance": "org.allaymc.javaplugintemplate.JavaPluginTemplate",
-  "name": "JavaPluginTemplate",
-  "authors": ["mdx"],
-  "version": "1.0.0"
+  "entrance": "com.acktar.economyapi.EconomyAPI",
+  "name": "EconomyAPI",
+  "authors": ["ACKTAR"],
+  "description": "A Simple EconomyAPI plugin using SQLITE and MONGODB!",
+  "version": "1.0.0-SNAPSHOT"
 }
