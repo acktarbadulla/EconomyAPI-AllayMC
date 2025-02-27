@@ -2,6 +2,7 @@ package com.acktar.economyapi.commands;
 
 import org.allaymc.api.command.SimpleCommand;
 import org.allaymc.api.command.tree.CommandTree;
+import org.allaymc.api.command.SenderType
 import org.allaymc.api.server.Server;
 import org.allaymc.api.entity.interfaces.EntityPlayer;
 
@@ -26,14 +27,6 @@ public class BalanceCommand extends SimpleCommand {
                     DatabaseHandler database = EconomyAPI.INSTANCE.getDatabase();
                     
                     if (player.isBlank()) {
-                        // Ensure sender is a player
-                        if (!(context.getSender() instanceof EntityPlayer)) {
-                            context.getSender().sendText("Usage: /balance <player>");
-                            return context.fail();
-                        }                     
-                        
-                        EntityPlayer sender = (EntityPlayer) context.getSender(); // Cast CommandSender to EntityPlayer
-         
                         // Get the balance for the sender
                         double balance = database.getBalance(sender.getDisplayName());
                         
@@ -59,7 +52,7 @@ public class BalanceCommand extends SimpleCommand {
                                 log.info("PLAYER NOT FOUND OUTPUT Format not set in the config");
                                 return context.fail();
                             }
-                            context.getSender().sendText(playerNotFound);
+                            sender.sendText(playerNotFound);
                             return context.fail();
                         }
                        
@@ -77,9 +70,9 @@ public class BalanceCommand extends SimpleCommand {
                                 .replace("PLAYER", player)
                                 .replace("BALANCE", String.valueOf(balance));  // Convert balance to String
                      
-                        context.getSender().sendText(broadcastMessage);
+                        sender.sendText(broadcastMessage);
                         return context.success();
                     }
-                });
+                }, SenderType.PLAYER);
     }
 }
