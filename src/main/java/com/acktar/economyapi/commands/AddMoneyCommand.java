@@ -2,7 +2,7 @@ package com.acktar.economyapi.commands;
 
 import org.allaymc.api.command.SimpleCommand;
 import org.allaymc.api.command.tree.CommandTree;
-import org.allaymc.api.command.SenderType
+import org.allaymc.api.command.SenderType;
 import org.allaymc.api.server.Server;
 import org.allaymc.api.entity.interfaces.EntityPlayer;
 
