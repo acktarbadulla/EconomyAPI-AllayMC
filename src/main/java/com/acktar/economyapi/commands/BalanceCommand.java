@@ -29,7 +29,7 @@ public class BalanceCommand extends SimpleCommand {
                         // Ensure sender is a player
                         if (!(context.getSender() instanceof EntityPlayer)) {
                             context.getSender().sendText("Usage: /balance <player>");
-                            return context.success();
+                            return context.fail();
                         }                     
                         
                         EntityPlayer sender = (EntityPlayer) context.getSender(); // Cast CommandSender to EntityPlayer
@@ -42,7 +42,7 @@ public class BalanceCommand extends SimpleCommand {
 
                         if (formatTemplate == null || formatTemplate.isEmpty()) {
                             log.info("SELF BALANCE OUTPUT format not set in the config");
-                            return context.success();
+                            return context.fail();
                         }
 
                         // Replace placeholders with actual values
@@ -52,17 +52,15 @@ public class BalanceCommand extends SimpleCommand {
                         sender.sendText(broadcastMessage);
                         return context.success();
                     } else {
-                        EntityPlayer sender = (EntityPlayer) context.getSender(); // Cast CommandSender to EntityPlayer
-                        
                         // Handle player balance
                         if (!database.hasAccount(player)) {
                             String playerNotFound = EconomyAPI.INSTANCE.CONFIG.playerNotFound();
                             if (playerNotFound == null || playerNotFound.isEmpty()) {
-                                log.info("PLAYER NOT FOUND OUTPUT format not set in the config");
-                                return context.success();
+                                log.info("PLAYER NOT FOUND OUTPUT Format not set in the config");
+                                return context.fail();
                             }
-                            sender.sendText(playerNotFound);
-                            return context.success();
+                            context.getSender().sendText(playerNotFound);
+                            return context.fail();
                         }
                        
                         double balance = database.getBalance(player);
@@ -71,7 +69,7 @@ public class BalanceCommand extends SimpleCommand {
 
                         if (formatTemplate == null || formatTemplate.isEmpty()) {
                             log.info("PLAYER BALANCE OUTPUT format not set in the config");
-                            return context.success();
+                            return context.fail();
                         }
 
                         // Replace placeholders with actual values
@@ -79,7 +77,7 @@ public class BalanceCommand extends SimpleCommand {
                                 .replace("PLAYER", player)
                                 .replace("BALANCE", String.valueOf(balance));  // Convert balance to String
                      
-                        sender.sendText(broadcastMessage);
+                        context.getSender().sendText(broadcastMessage);
                         return context.success();
                     }
                 });
