@@ -65,6 +65,6 @@ public class ReduceMoneyCommand extends SimpleCommand {
                         sender.sendText("An internal error occured while trying to update users balance!");
                         return context.fail();
                     }
-                });
+                }, SenderType.PLAYER);
     }
 }
