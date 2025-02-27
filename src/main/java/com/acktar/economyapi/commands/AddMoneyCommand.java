@@ -30,7 +30,7 @@ public class AddMoneyCommand extends SimpleCommand {
                     // Ensure sender is a player
                     if (!(context.getSender() instanceof EntityPlayer)) {
                         context.getSender().sendText("Usage: /setmoney <player> <balance>");
-                        return context.success();
+                        return context.fail();
                     }                     
                        
                     EntityPlayer sender = (EntityPlayer) context.getSender(); // Cast CommandSender to EntityPlayer
@@ -40,10 +40,10 @@ public class AddMoneyCommand extends SimpleCommand {
                         String playerNotFound = EconomyAPI.INSTANCE.CONFIG.playerNotFound();
                         if (playerNotFound == null || playerNotFound.isEmpty()) {
                              log.info("PLAYER NOT FOUND OUTPUT format not set in the config");
-                             return context.success();
+                             return context.fail();
                         }
                         sender.sendText(playerNotFound);
-                        return context.success();
+                        return context.fail();
                     }
                     
                     // Get the message format from the config
@@ -51,7 +51,7 @@ public class AddMoneyCommand extends SimpleCommand {
 
                     if (formatTemplate == null || formatTemplate.isEmpty()) {
                          log.info("PLAYER BALANCE OUTPUT format not set in the config");
-                         return context.success();
+                         return context.fail();
                     }
 
                     // Replace placeholders with actual values
@@ -66,7 +66,7 @@ public class AddMoneyCommand extends SimpleCommand {
                         return context.success();
                     } catch (Exception e) {
                         sender.sendText("An internal error occured while trying to update users balance!");
-                        return context.success();
+                        return context.fail();
                     }
                 });
     }
