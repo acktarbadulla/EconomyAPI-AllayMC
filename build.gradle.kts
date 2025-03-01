@@ -24,10 +24,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly(group = "org.allaymc.allay", name = "api", version = "master-SNAPSHOT")
+    compileOnly("com.github.PowerNukkitX:PowerNukkitX:master-SNAPSHOT")
     compileOnly(group = "org.projectlombok", name = "lombok", version = "1.18.34")
     implementation("org.mongodb:mongodb-driver-sync:4.7.1")
-    implementation("org.xerial:sqlite-jdbc:3.45.1.0") 
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0")
+    implementation("eu.okaeri:okaeri-configs-yaml-snakeyaml:5.0.6")
 
     annotationProcessor(group = "org.projectlombok", name = "lombok", version = "1.18.34")
 }
