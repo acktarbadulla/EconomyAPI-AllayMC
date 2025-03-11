@@ -19,11 +19,11 @@ public class PlayerListener {
         String playerId = player.getDisplayName();
 
         try {
-        DatabaseHandler database = EconomyAPI.INSTANCE.getDatabase();
+        DatabaseHandler database = EconomyAPI.getInstance().getDatabase();
         // Check if the player has an account
         if (!database.hasAccount(playerId)) {
         
-            double defaultMoney = EconomyAPI.INSTANCE.config.defaultMoney();
+            double defaultMoney = EconomyAPI.getInstance().config.defaultMoney();
             
             if (defaultMoney == 0.0) {
                 log.info("DEFAULT-MONEY is not set. Please configure ECONOMY-SETTINGS");
@@ -31,7 +31,7 @@ public class PlayerListener {
             }
             
             // Get the message format from the config
-            String formatTemplate = EconomyAPI.INSTANCE.config.newPlayerNotify();
+            String formatTemplate = EconomyAPI.getInstance().config.newPlayerNotify();
 
             if (formatTemplate == null || formatTemplate.isEmpty()) {
                   log.info("NEW PLAYER NOTIFY OUTPUT format not set in the config");
