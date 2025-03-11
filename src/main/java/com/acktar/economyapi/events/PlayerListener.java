@@ -17,12 +17,13 @@ public class PlayerListener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         EntityPlayer player = event.getPlayer();
         String playerId = player.getDisplayName();
-        
+
+        try {
         DatabaseHandler database = EconomyAPI.INSTANCE.getDatabase();
         // Check if the player has an account
         if (!database.hasAccount(playerId)) {
         
-            double defaultMoney = EconomyAPI.INSTANCE.CONFIG.defaultMoney();
+            double defaultMoney = EconomyAPI.INSTANCE.config.defaultMoney();
             
             if (defaultMoney == 0.0) {
                 log.info("DEFAULT-MONEY is not set. Please configure ECONOMY-SETTINGS");
@@ -30,7 +31,7 @@ public class PlayerListener {
             }
             
             // Get the message format from the config
-            String formatTemplate = EconomyAPI.INSTANCE.CONFIG.newPlayerNotify();
+            String formatTemplate = EconomyAPI.INSTANCE.config.newPlayerNotify();
 
             if (formatTemplate == null || formatTemplate.isEmpty()) {
                   log.info("NEW PLAYER NOTIFY OUTPUT format not set in the config");
@@ -46,6 +47,9 @@ public class PlayerListener {
             // Create the account with a default balance
             database.createAccount(playerId, defaultMoney);
             player.sendText(broadcastMessage);
-            } 
+            }
+          } catch (Exception e) {
+            log.error("An error occurred while processing player join event for player {}: {}", playerId, e.getMessage());
+        }
       }
 }
