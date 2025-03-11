@@ -20,15 +20,16 @@ import com.acktar.economyapi.commands.ReduceMoneyCommand;
 @Slf4j
 public class EconomyAPI extends Plugin {
 
-    public DatabaseHandler DATABASE;
-    public static EconomyAPI INSTANCE;
-    public Config CONFIG;
+    private DatabaseHandler database;
+    private static EconomyAPI instance;
+    public Config config;
+    private boolean enableAscii = true;
     
     @Override
     public void onLoad() {
         INSTANCE = this;
         log.info("Loading Configuration file..!");
-        CONFIG = ConfigManager.create(Config.class, config -> {
+        config = ConfigManager.create(Config.class, config -> {
             config.withConfigurer(new YamlSnakeYamlConfigurer());
             config.withBindFile(pluginContainer.dataFolder().resolve("config.yml"));
             config.withRemoveOrphans(true);
@@ -39,45 +40,59 @@ public class EconomyAPI extends Plugin {
 
     @Override
     public void onEnable() {
-        // Initialize database
-        if (CONFIG.databaseType().equals("SQLITE")) {
-            DATABASE = new SQLiteHandler(pluginContainer.dataFolder() + "/economy.db");
-            log.info("Using SQLITE as default Database-Provider...");
-        } else if (CONFIG.databaseType().equals("MONGODB")) {
-        
-            String mongoURI = CONFIG.mongoURI();
-            if (mongoURI.isEmpty()) {
-                log.info("MongoURI is not set. Please configure MongoDB or use SQLITE");
-            return;
-            }
-            
-            String mongoDBName = CONFIG.mongoDBName();
-            if (mongoDBName.isEmpty()) {
-                log.info("MongoDBName is not set. Please configure MongoDB or use SQLITE");
-            return;
-            }
-            
-            DATABASE = new MongoDBHandler(mongoURI, mongoDBName);
-            log.info("Using MONGODB as Database-Provider...");
-        } else {
-            log.info("Unsupported Database Provider detected! Please choose between SQLITE or MONGODB");
+        if (enableAscii) displayASCII();
+        try {
+            initializeDatabase();
+            registerCommandsAndEvents();
+            log.info("EconomyAPI has been enabled!");
+        } catch (Exception e) {
+            log.error("Failed to enable EconomyAPI: ", e);
         }
-        
+    }
+
+    private void initializeDatabase() {
+        String databaseType = config.databaseType();
+        switch (databaseType.toUpperCase()) {
+            case "SQLITE":
+                database = new SQLiteHandler(pluginContainer.dataFolder() + "/economy.db");
+                log.info("Using SQLITE as default Database-Provider...");
+                break;
+            case "MONGODB":
+                String mongoURI = config.mongoURI();
+                String mongoDBName = config.mongoDBName();
+                if (mongoURI.isEmpty() || mongoDBName.isEmpty()) {
+                    throw new IllegalArgumentException("MongoURI or MongoDBName is not configured properly. Please configure MongoDB or use SQLITE.");
+                }
+                database = new MongoDBHandler(mongoURI, mongoDBName);
+                log.info("Using MONGODB as Database-Provider...");
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported Database Provider detected! Please choose between SQLITE or MONGODB.");
+        }
+    }
+
+    private void registerCommandsAndEvents() {
         Server.getInstance().getEventBus().registerListener(new PlayerListener());
-        
         Registries.COMMANDS.register(new BalanceCommand());
         Registries.COMMANDS.register(new SetMoneyCommand());
         Registries.COMMANDS.register(new AddMoneyCommand());
         Registries.COMMANDS.register(new ReduceMoneyCommand());
-       
-        log.info("EconomyAPI has been enabled!");
+    }
+
+    public void displayASCII() {
+        log.info(".   _____  _________  ____  __.________________ __________ ");
+        log.info("  /  _  \\ \\_   ___ \\|    |/ _|\\__    ___/  _  \\\\______   \\");
+        log.info(" /  /_\\  \\/    \\  \\/|      <  |    | /  /_\\   \\|       _/");
+        log.info("/    |    \\     \\___|    |\\    |    |/    |     \\   |   \\");
+        log.info("\\____|__  /\\______  /____|__\\  |____| \\____|__   /____|_  /");
+        log.info("         \\/        \\/      \\/              \\/      \\/ ");
     }
     
     public static EconomyAPI getInstance(){
-        return INSTANCE;
+        return instance;
     }
     
     public DatabaseHandler getDatabase() {
-        return DATABASE;
+        return database;
     }
 }
