@@ -27,7 +27,7 @@ Command | Aliases | Description | use
 <dependency>
 	    <groupId>com.github.acktarbadulla</groupId>
 	    <artifactId>EconomyAPI-AllayMC</artifactId>
-	    <version>AllayMC</version>
+	    <version>1.0.1</version>
 </dependency>
 ```
 
