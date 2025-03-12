@@ -7,7 +7,7 @@ plugins {
 
 group = "com.acktar.economyapi"
 description = "A Simple EconomyAPI plugin using SQLITE and MONGODB!"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1"
 
 java {
     toolchain {
