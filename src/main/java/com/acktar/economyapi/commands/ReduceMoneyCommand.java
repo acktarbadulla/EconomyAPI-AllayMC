@@ -17,54 +17,58 @@ public class ReduceMoneyCommand extends SimpleCommand {
         super("reducemoney", "Reduces money from a players balance!");
     }
 
-    @Override
-    public void prepareCommandTree(CommandTree tree) {
-        tree.getRoot()
-                .str("player")
-                .doubleNum("money")
-                .exec((context, sender) -> {
-                    String player = context.getResult(0);
-                    Double money = context.getResult(1);
-                    String moneyyy = String.valueOf(money);
-                    DatabaseHandler database = EconomyAPI.INSTANCE.getDatabase();
-      
+@Override
+public void prepareCommandTree(CommandTree tree) {
+    tree.getRoot()
+            .str("player")
+            .doubleNum("money")
+            .exec((context, sender) -> {
+                String player = context.getResult(0);
+                Double money = context.getResult(1);
+                
+                // Prevent negative input
+                if (money < 0) {
+                    sender.sendText("§l§7[§bEconomyAPI§7] §r§c Money cannot be < 0");
+                    return context.fail();
+                }
+
+                String moneyStr = String.valueOf(money);
+                DatabaseHandler database = EconomyAPI.getInstance().getDatabase();
+
+                try {
                     // Handle player balance
                     if (!database.hasAccount(player)) {
-                        String playerNotFound = EconomyAPI.INSTANCE.CONFIG.playerNotFound();
+                        String playerNotFound = EconomyAPI.getInstance().config.playerNotFound();
                         if (playerNotFound == null || playerNotFound.isEmpty()) {
-                             log.info("PLAYER NOT FOUND OUTPUT format not set in the config");
-                             return context.fail();
+                            log.info("PLAYER NOT FOUND OUTPUT format not set in the config");
+                            sender.sendText("§l§7[§bEconomyAPI§7] §r§cA Configuration issue was detected! Please report to a server admin.");
+                            return context.fail();
                         }
                         sender.sendText(playerNotFound);
                         return context.fail();
                     }
-                    
-                    // Get the message format from the config
-                    String formatTemplate = EconomyAPI.INSTANCE.CONFIG.reduceMoneyOutput();
 
+                    // Get the message format from the config
+                    String formatTemplate = EconomyAPI.getInstance().config.reduceMoneyOutput();
                     if (formatTemplate == null || formatTemplate.isEmpty()) {
-                         log.info("PLAYER BALANCE OUTPUT format not set in the config");
-                         return context.fail();
+                        log.info("ADD MONEY OUTPUT format not set in the config");
+                        sender.sendText("§l§7[§bEconomyAPI§7] §r§cA Configuration issue was detected! Please report to a server admin.");
+                        return context.fail();
                     }
 
                     // Replace placeholders with actual values
                     String broadcastMessage = formatTemplate
                             .replace("PLAYER", player)
-                            .replace("AMOUNT", moneyyy);  // Convert balance to String
-                     
-                    try {
-                        // Set the player's balance
-                        boolean success = database.subtractBalance(player, money);
-                        if (success) {
-                        sender.sendText(broadcastMessage);
-                        } else {
-                        sender.sendText("Player does not have enough money to reduce");
-                        }
-                        return context.success();
-                    } catch (Exception e) {
-                        sender.sendText("An internal error occured while trying to update users balance!");
-                        return context.fail();
-                    }
-                }, SenderType.PLAYER);
-    }
+                            .replace("AMOUNT", moneyStr);
+
+                    // Set the player's balance
+                    database.subtractBalance(player, money);
+                    sender.sendText(broadcastMessage);
+                    return context.success();
+                } catch (Exception e) {
+                    log.error("An error occurred while trying to update the player's balance", e);
+                    sender.sendText("§l§7[§bEconomyAPI§7] §r§cAn internal error occurred while trying to update the user's balance!");
+                    return context.fail();
+                }
+            }, SenderType.PLAYER);
 }
