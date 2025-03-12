@@ -16,7 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 public class BalanceCommand extends SimpleCommand {
     public BalanceCommand() {
         super("balance", "Display yours or another players balance");
-        aliases.add("bal", "money");
+        aliases.add("bal");
+        aliases.add("money");
         getPermissions().forEach(DefaultPermissions.MEMBER::addPermission);
     }
 
