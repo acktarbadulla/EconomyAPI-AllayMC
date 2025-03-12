@@ -16,7 +16,7 @@ public class AddMoneyCommand extends SimpleCommand {
         super("addmoney", "Add money to a player's balance!");
     }
 
-    @Override
+@Override
 public void prepareCommandTree(CommandTree tree) {
     tree.getRoot()
             .str("player")
