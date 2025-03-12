@@ -71,3 +71,4 @@ public void prepareCommandTree(CommandTree tree) {
                 }
             }, SenderType.PLAYER);
 }
+}
