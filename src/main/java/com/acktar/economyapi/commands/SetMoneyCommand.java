@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SetMoneyCommand extends SimpleCommand {
     public SetMoneyCommand() {
         super("setmoney", "Set a players balance!");
+        aliases.add("sm");
     }
 
 @Override
