@@ -27,7 +27,7 @@ public class EconomyAPI extends Plugin {
     
     @Override
     public void onLoad() {
-        INSTANCE = this;
+        instance = this;
         log.info("Loading Configuration file..!");
         config = ConfigManager.create(Config.class, config -> {
             config.withConfigurer(new YamlSnakeYamlConfigurer());
