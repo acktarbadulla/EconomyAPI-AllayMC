@@ -5,12 +5,12 @@ Because MongoDB is the GOAT
 ![Banner](https://github.com/acktarbadulla/EconomyAPI-AllayMC/blob/master/20250227_210202.jpg)
 
 # Commands
-Command | Description | use
---- | --- | ---
-`/setmoney` | Set A Players Total Balance | op
-`/addmoney` | Add Money To A Players Balance | op
-`/reducemoney` | Reduce Money From A Players Balance | op
-`/balance` | See Your / Other Players Balance | all
+Command | Aliases | Description | use
+--- | --- | --- | ---
+`/setmoney` | `/sm` | Set A Players Total Balance | op
+`/addmoney` | `/am` | Add Money To A Players Balance | op
+`/reducemoney` | `/rm` | Reduce Money From A Players Balance | op
+`/balance` | `/bal /money` | See Your / Other Players Balance | all
 
 # Repository
 ```xml
