@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReduceMoneyCommand extends SimpleCommand {
     public ReduceMoneyCommand() {
         super("reducemoney", "Reduces money from a players balance!");
+        aliases.add("rm");
     }
 
 @Override
