@@ -34,7 +34,7 @@ public class BalanceCommand extends SimpleCommand {
                             double balance = database.getBalance(sender.getDisplayName());
 
                             // Get the message format from the config
-                            String formatTemplate = EconomyAPI.getInstance().Config.selfBalanceOutput();
+                            String formatTemplate = EconomyAPI.getInstance().config.selfBalanceOutput();
 
                             if (formatTemplate == null || formatTemplate.isEmpty()) {
                                 log.info("SELF BALANCE OUTPUT format not set in the config");
@@ -51,7 +51,7 @@ public class BalanceCommand extends SimpleCommand {
                         } else {
                             // Handle player balance
                             if (!database.hasAccount(player)) {
-                                String playerNotFound = EconomyAPI.getInstance().Config.playerNotFound();
+                                String playerNotFound = EconomyAPI.getInstance().config.playerNotFound();
                                 if (playerNotFound == null || playerNotFound.isEmpty()) {
                                     log.info("PLAYER NOT FOUND OUTPUT format not set in the config");
                                     sender.sendText("§l§7[§bEconomyAPI§7] §r§cA Configuration issue was detected! Please report to a server admin.");
@@ -63,7 +63,7 @@ public class BalanceCommand extends SimpleCommand {
 
                             double balance = database.getBalance(player);
                             // Get the message format from the config
-                            String formatTemplate = EconomyAPI.getInstance().Config.playerBalanceOutput();
+                            String formatTemplate = EconomyAPI.getInstance().config.playerBalanceOutput();
 
                             if (formatTemplate == null || formatTemplate.isEmpty()) {
                                 log.info("PLAYER BALANCE OUTPUT format not set in the config");
